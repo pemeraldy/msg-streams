@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from "../dbConnection";
 
 const { Schema } = mongoose;
 
@@ -25,7 +25,8 @@ const messageSchema = new Schema({
     type: String,
   },
   date: {
-    type: String,
+    type: Date,
+    default: new Date()
   },
   tags: {
     type: Array,
@@ -35,3 +36,4 @@ const messageSchema = new Schema({
 mongoose.model("messages", messageSchema);
 
 module.exports = mongoose.model("messages");
+

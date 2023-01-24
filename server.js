@@ -1,4 +1,3 @@
-const initializeDB = require("./src/database/dbConnection");
 const app = require('./src/index')
 require('dotenv').config()
 
@@ -7,7 +6,7 @@ const config = {
 }
 
 const server = app.listen(config.port, () => {
-  initializeDB();
+  
   console.log("Server started on pot", config.port);
 });
 
