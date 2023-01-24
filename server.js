@@ -1,9 +1,5 @@
 const app = require('./src/index')
-require('dotenv')
-
-
-console.log(process.env.PORT)
-
+require('dotenv').config()
 
 const config = {
   port: process.env.PORT || 3000,
