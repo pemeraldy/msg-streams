@@ -1,4 +1,4 @@
-import mongoose from "../dbConnection";
+const mongoose = require("../dbConnection");
 
 const { Schema } = mongoose;
 
@@ -17,16 +17,19 @@ const messageSchema = new Schema({
   },
   excerpt: {
     type: String,
+    default: "",
   },
   thumbnail: {
     type: String,
+    default: "",
   },
   image: {
     type: String,
+    default: "",
   },
   date: {
     type: Date,
-    default: new Date()
+    default: new Date(),
   },
   tags: {
     type: Array,
