@@ -1,4 +1,4 @@
-const fs = require('fs')
+const fs = require("fs");
 const cloudinary = require("cloudinary");
 require("dotenv").config();
 cloudinary.config({
@@ -14,7 +14,7 @@ const uploadHandlers = {
         console.log(error);
         return error;
       }
-      console.log(result);
+      // console.log('AUDIO:::',result);
       return result;
     });
   },
@@ -24,16 +24,28 @@ const uploadHandlers = {
         console.log(error);
         return error;
       }
-      console.log(result);
+      // console.log('IMAGE:::',result);
       return result;
     });
   },
-  deleteFileInServer: (filePath) => {
+  deleteFileInServer: async (filePath) => {
+    if (Array.isArray(filePath)) {
+      console.log("DELETING FILES...");
+      try {
+        filePath.forEach((path) => {
+          fs.unlink(path, (err) => {
+            if (err) return console.log(err);
+          });
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      return;
+    }
     fs.unlink(filePath, (err) => {
       if (err) return console.log(err);
     });
   },
 };
 
-
-module.exports = uploadHandlers
+module.exports = uploadHandlers;

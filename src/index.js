@@ -3,8 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
 const user = require("./database/models/userSchema");
-const message = require("./database/models/messageSchema");
-const {uploadAudio, deleteFileInServer} = require('./utils/cloudinaryHandler')
+const {uploadAudio, deleteFileInServer, uploadImage} = require('./utils/cloudinaryHandler')
 const upload = multer({ dest: "uploads/" });
 
 
@@ -25,12 +24,17 @@ const saveUser = async () => {
 
 const messageRoute = async (req, res) => {  
   try {
-    if(req.file){
-      const {path} = req.file
-      console.log("FILE",req.file);
-      
-      await uploadAudio(path,'new-audio1');
-      deleteFileInServer(path)
+    if(req.files){
+      const { audio, photo } = req.files;
+      const filePaths = [audio[0].path, photo[0].path];
+      console.log("FILEs", filePaths);      
+      const aud = await uploadAudio(audio[0].path, audio[0].originalname);
+      console.log(aud);
+      await uploadImage(photo[0].path, photo[0].originalname);
+      await deleteFileInServer(filePaths);
+      // deleteFileInServer(audio[0].path)
+      // deleteFileInServer(photo[0].path)
+
     }
     res.status(200).json({ msg: "Test" });
   } catch (error) {    
@@ -46,7 +50,7 @@ const initializeApp = () => {
     return res.status(200).sendFile(path.join(__dirname, './sample-page.html'))
   });
 
-  app.post("/message", upload.single("audio"), messageRoute);
+  app.post("/message", upload.fields([{name: "audio", maxCount: 1}, {name:"photo", maxCount: 1}]), messageRoute);
 
   return app;
 };
