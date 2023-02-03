@@ -1,3 +1,4 @@
+const fs = require('fs')
 const cloudinary = require("cloudinary");
 require("dotenv").config();
 cloudinary.config({
@@ -15,6 +16,21 @@ const uploadHandlers = {
       }
       console.log(result);
       return result;
+    });
+  },
+  uploadImage: async (filePath, fileName) => {
+    cloudinary.v2.uploader.upload(filePath, { public_id: `messageImages/${fileName}` }, function (error, result) {
+      if (error) {
+        console.log(error);
+        return error;
+      }
+      console.log(result);
+      return result;
+    });
+  },
+  deleteFileInServer: (filePath) => {
+    fs.unlink(filePath, (err) => {
+      if (err) return console.log(err);
     });
   },
 };
