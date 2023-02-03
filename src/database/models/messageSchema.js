@@ -19,10 +19,6 @@ const messageSchema = new Schema({
     type: String,
     default: "",
   },
-  thumbnail: {
-    type: String,
-    default: "",
-  },
   image: {
     type: String,
     default: "",
